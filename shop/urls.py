@@ -25,16 +25,9 @@ from catalog import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
-]
-
-urlpatterns += [
-     path('catalog/', include('catalog.urls')),
-]
-
-urlpatterns += [
+    path('catalog/', include('catalog.urls')),
     path('', RedirectView.as_view(url='/catalog/', permanent=True)),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
-
-
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
