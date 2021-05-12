@@ -1,0 +1,17 @@
+{% extends "base_generic.html" %}
+
+
+{% block title %}<title>индекс.хтмл</title>{% endblock %}
+
+
+{% block content %}
+  <h1>Икея для бедных</h1>
+  <p>The shop has the following record counts:</p>
+  <ul>
+    <li><strong>Furniture:</strong> {{ num_furniture }}</li>
+    <li><strong>Copies:</strong> {{ num_instances }}</li>
+    <li><strong>Copies available:</strong> {{ num_instances_available }}</li>
+    <li><strong>Brands:</strong> {{ num_brands }}</li>
+    <li><strong>Brands from Russia:</strong> {{ num_brands_from_Russia }}</li>
+  </ul>
+{% endblock %}

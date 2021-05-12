@@ -1,0 +1,17 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Furniture List</h1>
+  {% if furniture_list %}
+  <ul>
+    {% for furniture in furniture_list %}
+      <li>
+        <a href="{{ furniture.get_absolute_url }}">{{ furniture.name }}</a> ({{furniture.brand}})
+      </li>
+    {% endfor %}
+
+  </ul>
+  {% else %}
+    <p>There are no furniture in the shop.</p>
+  {% endif %} 
+{% endblock %}
