@@ -2,6 +2,7 @@ import uuid
 
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 class Type(models.Model):
@@ -48,7 +49,9 @@ class FurnitureInstance(models.Model):
         """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                           help_text="Unique ID for this particular furniture")
-    Furniture = models.ForeignKey('Furniture', on_delete=models.SET_NULL, null=True)
+    furniture = models.ForeignKey('Furniture', on_delete=models.SET_NULL, null=True)
+    buyer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    # delivery_day
 
     Availability_STATUS = (
         ('a', 'Available'),
@@ -65,7 +68,7 @@ class FurnitureInstance(models.Model):
         """
         String for representing the Model object
         """
-        return '%s (%s) -- %s' % (self.id, self.Furniture.name, self.status)
+        return '%s (%s) -- %s' % (self.id, self.furniture.name, self.status)
 
     class Meta:
         ordering = ['status']

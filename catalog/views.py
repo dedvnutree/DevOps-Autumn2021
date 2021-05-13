@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from catalog.models import Furniture, FurnitureInstance, Brand
 from django.views import generic
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 def index(request):
@@ -12,7 +13,6 @@ def index(request):
 
     num_visits = request.session.get('num_visits', 1)
     request.session['num_visits'] = num_visits + 1
-
 
     context = {
         'num_furniture': num_furniture,
@@ -42,3 +42,12 @@ class BrandListView(generic.ListView):
 
 class BrandDetailView(generic.DetailView):
     model = Brand
+
+
+class ReservedFurnitureByUserListView(LoginRequiredMixin, generic.ListView):
+    model = FurnitureInstance
+    template_name = 'catalog/firnitureinstance_list_reserved_user.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return FurnitureInstance.objects.filter(buyer=self.request.user)

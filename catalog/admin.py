@@ -19,7 +19,16 @@ class FurnitureAdmin(admin.ModelAdmin):
 
 @admin.register(FurnitureInstance)
 class FurnitureInstanceAdmin(admin.ModelAdmin):
-    list_filter = ('Furniture', 'status')
+    list_display = ('furniture', 'status', 'buyer', id)
+    list_filter = ('furniture', 'status')
+    fieldsets = (
+        (None, {
+            'fields': ('furniture', 'id')
+        }),
+        ('Availability', {
+            'fields': ('status',  'buyer')
+        }),
+    )
 
 
 admin.site.register(Type)
