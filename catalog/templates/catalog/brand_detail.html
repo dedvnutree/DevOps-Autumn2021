@@ -1,17 +1,17 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Title: {{ brand.name }}</h1>
+  <h1>Производитель {{ brand.name }}</h1>
 
-  <p><strong>Country:</strong> {{ brand.country}}</p>
-  <p><strong>Description:</strong> {{ brand.description}}</p>
+  <p><strong>Страна:</strong> {{ brand.country}}</p>
+  <p><strong>Контакты:</strong> {{ brand.description}}</p>
 
   <div style="margin-left:20px;margin-top:20px">
     <h4>Товары</h4>
 
     {% for copy in brand.furniture_set.all %}
       <hr>
-      <a href="{{ copy.get_absolute_url }}" class="text-success">{{ copy.name}}</a>
+      <a href="{{ copy.get_absolute_url }}">{{ copy.name}}</a>
 
       <div>(всего: {{copy.furnitureinstance_set.all.count}}, доступно: {{copy.get_available_amount}})</div>
 

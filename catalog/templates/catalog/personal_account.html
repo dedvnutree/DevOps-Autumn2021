@@ -1,0 +1,21 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Мои покупки</h1>
+
+    {% if furnitureinstance_list %}
+    <ul>
+
+      {% for furnitureinst in furnitureinstance_list %}
+      <li>
+          {{furnitureinst.furniture.type.first}}
+          <a href="{{ furnitureinst.furniture.get_absolute_url }}">{{furnitureinst.furniture.name}}</a>
+          {{furnitureinst.delivery}}
+      </li>
+      {% endfor %}
+    </ul>
+
+    {% else %}
+      <p>Вы еще не покупали у нас мебель</p>
+    {% endif %}
+{% endblock %}

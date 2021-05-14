@@ -14,22 +14,35 @@
     <div class="row">
       <div class="col-sm-2">
       {% block sidebar %}
-        <ul class="sidebar-nav">
-            <li><a href="{% url 'index' %}">Home</a></li>
-            <li><a href="{% url 'furniture' %}">All furniture</a></li>
-            <li><a href="{% url 'brand' %}">All brands</a></li>
+        <ul class="sidebar-nav" style="width:150%;">
+            <li><a href="{% url 'index' %}">Главная страница</a></li>
+            <li><a href="{% url 'furniture' %}">Каталог</a></li>
+            <li><a href="{% url 'brand' %}">Бренды</a></li>
+            <br>
 
             {% if user.is_authenticated %}
-                <li>User: {{ user.get_username }}</li>
-                <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+                <li>Пользователь: <br>
+                    {% if user.first_name and user.last_name %}
+                        {{ user.first_name }} {{ user.last_name }}
+                    {% else %}
+                        {{ user.get_username }}
+                    {% endif %}
+                </li>
+                <li><a href="{% url 'my-account' %}">Личный кабинет</a></li>
+                <li><a href="{% url 'logout'%}?next={{request.path}}">Выйти из аккаунта</a></li>
             {% else %}
-                <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
+                <li><a href="{% url 'login'%}?next={{request.path}}">Войти в аккаунт</a></li>
+            {% endif %}
+            <br><br>
+
+            {% if perms.catalog.change_furniture%}
+                <li><a href="{% url 'workers-page' %}"> Рабочая страница </a> </li>
             {% endif %}
         </ul>
      {% endblock %}
 
       </div>
-      <div class="col-sm-10 ">{% block content %}{% endblock %}
+      <div class="col-sm-10">{% block content %}{% endblock %}
       {% block pagination %}
           {% if is_paginated %}
               <div class="pagination">

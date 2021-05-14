@@ -3,10 +3,10 @@
 {% block content %}
   <h1>Title: {{ furniture.name }}</h1>
 
-  <p><strong>Brand:</strong> <a href="{{ furniture.brand.get_absolute_url }}">{{ furniture.brand }}</a></p> <!-- author detail link not yet defined -->
-  <p><strong>Description:</strong> {{ furniture.description }}</p>
+  <p><strong>Производитель:</strong> <a href="{{ furniture.brand.get_absolute_url }}">{{ furniture.brand }}</a></p>
+  <p><strong>Тип:</strong> {{ furniture.type.all|join:", " }}</p>
+  <p><strong>Описание:</strong> {{ furniture.description }}</p>
   <p><strong>ISBN:</strong> {{ furniture.isbn }}</p>
-  <p><strong>Type:</strong> {{ book.type.all|join:", " }}</p>
 
   <div style="margin-left:20px;margin-top:20px">
     <h4>Copies</h4>
@@ -16,10 +16,10 @@
       <p class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'n' %}text-danger{% else %}text-warning{% endif %}">
         {{ copy.get_status_display }}
       </p>
-<!--      {% if copy.status != 'a' %}-->
-<!--        <p><strong>Due to be returned:</strong> {{ copy.due_back }}</p>-->
-<!--      {% endif %}-->
-<!--      <p><strong>Imprint:</strong> {{ copy.imprint }}</p>-->
+
+      <p>
+        {{ copy.delivery }}
+      </p>
       <p class="text-muted"><strong>Id:</strong> {{ copy.id }}</p>
     {% endfor %}
   </div>

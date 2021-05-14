@@ -13,20 +13,20 @@ class BrandAdmin(admin.ModelAdmin):
 
 @admin.register(Furniture)
 class FurnitureAdmin(admin.ModelAdmin):
-    list_display = ('name', 'display_type')
+    list_display = ('name', 'display_type', 'published')
     #inlines = [FurnitureInstanceInline]
 
 
 @admin.register(FurnitureInstance)
 class FurnitureInstanceAdmin(admin.ModelAdmin):
-    list_display = ('furniture', 'status', 'buyer', id)
-    list_filter = ('furniture', 'status')
+    list_display = ('furniture', 'status', 'delivery_day', 'buyer', id)
+    # list_filter = ('furniture', 'status')
     fieldsets = (
         (None, {
             'fields': ('furniture', 'id')
         }),
         ('Availability', {
-            'fields': ('status',  'buyer')
+            'fields': ('status',  'buyer', 'delivery_day')
         }),
     )
 

@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from catalog.models import Furniture, FurnitureInstance, Brand
 from django.views import generic
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.decorators import permission_required
 
 
 def index(request):
@@ -28,7 +29,6 @@ def index(request):
 
 class FurnitureListView(generic.ListView):
     model = Furniture
-    paginate_by = 5
 
 
 class FurnitureDetailView(generic.DetailView):
@@ -37,17 +37,24 @@ class FurnitureDetailView(generic.DetailView):
 
 class BrandListView(generic.ListView):
     model = Brand
-    paginate_by = 5
 
 
 class BrandDetailView(generic.DetailView):
     model = Brand
 
 
-class ReservedFurnitureByUserListView(LoginRequiredMixin, generic.ListView):
+class PersonalAccountListView(LoginRequiredMixin, generic.ListView):
     model = FurnitureInstance
-    template_name = 'catalog/firnitureinstance_list_reserved_user.html'
-    paginate_by = 10
+    template_name = 'catalog/personal_account.html'
 
     def get_queryset(self):
-        return FurnitureInstance.objects.filter(buyer=self.request.user)
+        return FurnitureInstance.objects.filter(buyer=self.request.user).order_by('delivery_day')
+
+
+class WorkersPageListView(PermissionRequiredMixin, generic.ListView):
+    model = Furniture
+    template_name = 'catalog/workers_page.html'
+    permission_required = ('catalog.change_furniture',)
+
+    def get_queryset(self):
+        return Furniture.objects.filter(published=False)

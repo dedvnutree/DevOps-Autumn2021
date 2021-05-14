@@ -3,6 +3,7 @@ import uuid
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
+from datetime import date, timedelta
 
 
 class Type(models.Model):
@@ -21,10 +22,11 @@ class Furniture(models.Model):
     """
     name = models.CharField(max_length=200)
     brand = models.ForeignKey('Brand', on_delete=models.SET_NULL, null=True)
-    description = models.TextField(max_length=1000, help_text="Enter description of the product")
+    description = models.TextField(max_length=1000, help_text="Описание продукта")
     isbn = models.CharField('ISBN', max_length=13,
                             help_text='13 Character <a href="https://www.isbn-international.org/content/what-isbn">ISBN number</a>')
     type = models.ManyToManyField(Type, help_text="Select a type of this product")
+    published = models.BooleanField(default=False, help_text="Опубликовано")
 
     def __str__(self):
         return self.name
@@ -40,7 +42,7 @@ class Furniture(models.Model):
         return self.furnitureinstance_set.filter(status='a').count()
 
     class Meta:
-        ordering = ['name']
+        ordering = ['brand']
 
 
 class FurnitureInstance(models.Model):
@@ -51,7 +53,6 @@ class FurnitureInstance(models.Model):
                           help_text="Unique ID for this particular furniture")
     furniture = models.ForeignKey('Furniture', on_delete=models.SET_NULL, null=True)
     buyer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    # delivery_day
 
     Availability_STATUS = (
         ('a', 'Available'),
@@ -60,9 +61,20 @@ class FurnitureInstance(models.Model):
     )
 
     status = models.CharField(max_length=1, choices=Availability_STATUS, blank=True, default='m', help_text='Furniture availability')
+    delivery_day = models.DateField(default=date.today() + timedelta(days=10), help_text="Delivery day")
+
+    @property
+    def delivery(self):
+        if self.status == 'n' and self.delivery_day < date.today():
+            return "был доставлен %s" % self.delivery_day
+        if self.status == 'a':
+            self.delivery_day = date.today() + timedelta(days=10);
+            return "привезем уже к %s!" % self.delivery_day
+        return "будет доставлен %s" % self.delivery_day #only if reserved
 
     class Meta:
         ordering = ["id"]
+        permissions = (("can_mark_available", "Mark furniture as available"),)
 
     def __str__(self):
         """

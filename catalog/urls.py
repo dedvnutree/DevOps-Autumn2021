@@ -8,5 +8,6 @@ urlpatterns = [
     path('furniture/<int:pk>', views.FurnitureDetailView.as_view(), name='furniture-detail'),
     path('brand/', views.BrandListView.as_view(), name='brand'),
     path('brand/<int:pk>', views.BrandDetailView.as_view(), name='brand-detail'),
-    path('myfurniture/', views.ReservedFurnitureByUserListView.as_view(), name='my-reserved'),
+    path('myaccount/', views.PersonalAccountListView.as_view(), name='my-account'),
+    path('workers_page/', views.WorkersPageListView.as_view(), name='workers-page'),
 ]

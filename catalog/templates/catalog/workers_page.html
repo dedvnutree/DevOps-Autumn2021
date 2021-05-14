@@ -1,0 +1,20 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Рабочая страница</h1>
+
+    {% if furniture_list %}
+    <ul>
+
+      {% for furniture in furniture_list %}
+      <li>
+          {{furniture.type.first}}
+          <a href="{{ furniture.get_absolute_url }}">{{furniture.name}}</a>
+      </li>
+      {% endfor %}
+    </ul>
+
+    {% else %}
+      <p>Нет товаров на проверку!</p>
+    {% endif %}
+{% endblock %}
