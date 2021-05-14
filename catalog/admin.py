@@ -13,7 +13,7 @@ class BrandAdmin(admin.ModelAdmin):
 
 @admin.register(Furniture)
 class FurnitureAdmin(admin.ModelAdmin):
-    list_display = ('name', 'display_type', 'published')
+    list_display = ('name', 'display_type', 'image', 'published')
     #inlines = [FurnitureInstanceInline]
 
 

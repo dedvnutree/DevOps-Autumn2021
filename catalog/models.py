@@ -27,6 +27,7 @@ class Furniture(models.Model):
                             help_text='13 Character <a href="https://www.isbn-international.org/content/what-isbn">ISBN number</a>')
     type = models.ManyToManyField(Type, help_text="Select a type of this product")
     published = models.BooleanField(default=False, help_text="Опубликовано")
+    image = models.CharField(max_length=500, help_text="Изображение продукта", null=True)
 
     def __str__(self):
         return self.name

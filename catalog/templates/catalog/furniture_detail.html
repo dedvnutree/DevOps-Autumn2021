@@ -5,6 +5,17 @@
 
   <p><strong>Производитель:</strong> <a href="{{ furniture.brand.get_absolute_url }}">{{ furniture.brand }}</a></p>
   <p><strong>Тип:</strong> {{ furniture.type.all|join:", " }}</p>
+
+  <figure>
+    {% if furniture.image %}
+      <img src="{{ furniture.image }}" alt="Картинка пропала :(" style="width:300px; height:auto;">
+    {% else %}
+      <img src="http://placekitten.com/200/203">
+      <figcaption class="text-danger"> Картинку украли, зато есть котятки </figcaption>
+    {% endif %}
+
+  </figure>
+
   <p><strong>Описание:</strong> {{ furniture.description }}</p>
   <p><strong>ISBN:</strong> {{ furniture.isbn }}</p>
 

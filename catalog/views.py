@@ -29,6 +29,8 @@ def index(request):
 
 class FurnitureListView(generic.ListView):
     model = Furniture
+    def get_queryset(self):
+        return Furniture.objects.filter(published=True)
 
 
 class FurnitureDetailView(generic.DetailView):
