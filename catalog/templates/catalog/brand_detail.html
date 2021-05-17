@@ -8,16 +8,15 @@
 
   <div style="margin-left:20px;margin-top:20px">
     <h4>Товары</h4>
-
-    {% for copy in brand.furniture_set.all %}
+    {% for copy in brand.get_published_furniture %}
       <hr>
-      <a href="{{ copy.get_absolute_url }}">{{ copy.name}}</a>
-
+      <a href="{{ copy.get_absolute_url }}">{{ copy.name }}</a>
       <div>(всего: {{copy.furnitureinstance_set.all.count}}, доступно: {{copy.get_available_amount}})</div>
+
 
       <p style="text-transform: capitalize;">{{copy.display_type}}</p>
       <p class="text-muted"><strong>Id:</strong> {{ copy.id }}</p>
-
+<!--{{copy.id}}-->
     {% endfor %}
   </div>
 {% endblock %}

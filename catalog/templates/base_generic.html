@@ -35,9 +35,11 @@
             {% endif %}
             <br><br>
 
-            {% if perms.catalog.change_furniture%}
+            {% if perms.catalog.worker%}
                 <li><a href="{% url 'workers-page' %}"> Рабочая страница </a> </li>
             {% endif %}
+
+            {{ perms.all }}
         </ul>
      {% endblock %}
 

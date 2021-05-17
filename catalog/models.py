@@ -66,25 +66,25 @@ class FurnitureInstance(models.Model):
 
     @property
     def delivery(self):
-        if self.status == 'n' and self.delivery_day < date.today():
-            return "был доставлен %s" % self.delivery_day
         if self.status == 'a':
-            self.delivery_day = date.today() + timedelta(days=10);
+            self.delivery_day = date.today() + timedelta(days=10)
             return "привезем уже к %s!" % self.delivery_day
+
+        if self.delivery_day < date.today():
+            self.status = 'n'
+            return "был доставлен %s" % self.delivery_day
+
         return "будет доставлен %s" % self.delivery_day #only if reserved
 
     class Meta:
-        ordering = ["id"]
-        permissions = (("can_mark_available", "Mark furniture as available"),)
+        ordering = ["status"]
+        permissions = (("worker", "Can manage catalog items (WORKER)"),)
 
     def __str__(self):
         """
         String for representing the Model object
         """
         return '%s (%s) -- %s' % (self.id, self.furniture.name, self.status)
-
-    class Meta:
-        ordering = ['status']
 
 
 class Brand(models.Model):
@@ -100,6 +100,9 @@ class Brand(models.Model):
         Returns the url to access a particular author instance.
         """
         return reverse('brand-detail', args=[str(self.id)])
+
+    def get_published_furniture(self):
+        return self.furniture_set.filter(published='True')
 
     def __str__(self):
         """

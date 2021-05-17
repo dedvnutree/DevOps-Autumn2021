@@ -3,6 +3,7 @@
 {% block content %}
     <h1>Рабочая страница</h1>
 
+    <h2><a href="{% url 'furniture-create' %}"> Создать товар </a></h2>
     {% if furniture_list %}
     <ul>
 
@@ -10,6 +11,11 @@
       <li>
           {{furniture.type.first}}
           <a href="{{ furniture.get_absolute_url }}">{{furniture.name}}</a>
+
+
+          {% if perms.catalog.worker %}
+           -- <a href="{% url 'furniture-update' furniture.id %}"> Изменить и опубликовать</a>
+          {% endif %}
       </li>
       {% endfor %}
     </ul>
