@@ -1,7 +1,7 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Brand List</h1>
+  <h1>Бренды</h1>
   {% if brand_list %}
   <ul>
     {% for brand in brand_list %}
@@ -12,6 +12,6 @@
 
   </ul>
   {% else %}
-    <p>There are no Brands in the shop.</p>
+    <p>Пропали все бренды :(</p>
   {% endif %} 
 {% endblock %}

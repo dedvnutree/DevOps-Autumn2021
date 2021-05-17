@@ -3,10 +3,9 @@
 {% block content %}
     <h1>Рабочая страница</h1>
 
-    <h2><a href="{% url 'furniture-create' %}"> Создать товар </a></h2>
     {% if furniture_list %}
     <ul>
-
+        <li><h4> <a href="{% url 'furniture-create' %}"> Создать новый товар </a> </h4></li>
       {% for furniture in furniture_list %}
       <li>
           {{furniture.type.first}}

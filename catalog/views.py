@@ -108,7 +108,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from catalog.models import Furniture, Brand
 
-class FurnitureCreate(CreateView):
+class FurnitureCreate(PermissionRequiredMixin,CreateView):
+    permission_required = 'catalog.worker'
     model = Furniture
     fields = ['name', 'brand', 'type', 'image', 'description', 'isbn',]
 
@@ -117,11 +118,13 @@ class FurnitureUpdate(PermissionRequiredMixin, UpdateView):
     model = Furniture
     fields = '__all__' # Not recommended (potential security issue if more fields added)
 
-class FurnitureDelete(DeleteView):
+class FurnitureDelete(PermissionRequiredMixin,DeleteView):
+    permission_required = 'catalog.worker'
     model = Furniture
     success_url = reverse_lazy('furniture')
 
-class FurnitureInstanceCreate(CreateView):
+class FurnitureInstanceCreate(PermissionRequiredMixin,CreateView):
+    permission_required = 'catalog.worker'
     model = FurnitureInstance
     fields = '__all__'
 
@@ -133,14 +136,17 @@ class FurnitureInstanceUpdate(PermissionRequiredMixin, UpdateView):
 
 
 
-class BrandCreate(CreateView):
+class BrandCreate(PermissionRequiredMixin,CreateView):
+    permission_required = 'catalog.worker'
     model = Brand
     fields = '__all__'
 
-class BrandUpdate(UpdateView):
+class BrandUpdate(PermissionRequiredMixin,UpdateView):
+    permission_required = 'catalog.worker'
     model = Brand
     fields = '__all__'
 
-class BrandDelete(DeleteView):
+class BrandDelete(PermissionRequiredMixin,DeleteView):
+    permission_required = 'catalog.worker'
     model = Brand
     success_url = reverse_lazy('brand')

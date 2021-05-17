@@ -6,14 +6,14 @@
 
 {% block content %}
   <h1>Икея для бедных</h1>
-  <p>The shop has the following record counts:</p>
+  <p>Сводка:</p>
   <ul>
-    <li><strong>Furniture:</strong> {{ num_furniture }}</li>
-    <li><strong>Copies:</strong> {{ num_instances }}</li>
-    <li><strong>Copies available:</strong> {{ num_instances_available }}</li>
-    <li><strong>Brands:</strong> {{ num_brands }}</li>
-    <li><strong>Brands from Russia:</strong> {{ num_brands_from_Russia }}</li>
+    <li><strong>Всего видов товаров:</strong> {{ num_furniture }}</li>
+    <li><strong>Экземпляров товаров:</strong> {{ num_instances }}</li>
+    <li><strong>Доступных товаров:</strong> {{ num_instances_available }}</li>
+    <li><strong>Брендов:</strong> {{ num_brands }}</li>
+    <li><strong>Российских брендов:</strong> {{ num_brands_from_Russia }}</li>
   </ul>
 
-  <p>You have visited this page {{ num_visits }} time{{ num_visits|pluralize }}.</p>
+  <p>Посещений этой страницы: {{ num_visits }} </p>
 {% endblock %}

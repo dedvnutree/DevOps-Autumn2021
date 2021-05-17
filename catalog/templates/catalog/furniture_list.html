@@ -1,7 +1,7 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Furniture List</h1>
+  <h1>Каталог</h1>
   {% if furniture_list %}
   <ul>
     {% for furniture in furniture_list %}
@@ -12,6 +12,6 @@
 
   </ul>
   {% else %}
-    <p>There are no furniture in the shop.</p>
+    <p>В магазине пропала вся мебель :(</p>
   {% endif %} 
 {% endblock %}

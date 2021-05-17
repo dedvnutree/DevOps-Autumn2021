@@ -1,7 +1,7 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Title: {{ furniture.name }}</h1>
+  <h1>Название: {{ furniture.name }}</h1>
 
   <p><strong>Производитель:</strong> <a href="{{ furniture.brand.get_absolute_url }}">{{ furniture.brand }}</a></p>
   <p><strong>Тип:</strong> {{ furniture.type.all|join:", " }}</p>
@@ -20,23 +20,50 @@
   <p><strong>ISBN:</strong> {{ furniture.isbn }}</p>
 
   <div style="margin-left:20px;margin-top:20px">
-    <h4>Copies</h4>
+    <h4>Наличие:</h4>
+    {% if perms.catalog.worker %}
+      <a href="{% url 'furnitureinstance-create' %}">Создание экземпляра </a>
 
-    {% for copy in furniture.furnitureinstance_set.all %}
-      <hr>
-      <p class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'n' %}text-danger{% else %}text-warning{% endif %}">
-        {{ copy.get_status_display }}
-      </p>
+      {% for copy in furniture.furnitureinstance_set.all %}
+      <div style="border-radius: 25px;
+                  border: 3px solid {% if copy.status == 'a' %} #73AD21 {% elif copy.status == 'n' %} red {% else %} #ffc107 {% endif %};
+                  padding: 10px;
+                  margin: 10px;
+                  width: 70%;
+                  height: auto;">
 
-      <p>
-        {{ copy.delivery }}
-      </p>
-      <p class="text-muted"><strong>Id:</strong> {{ copy.id }}
-        {% if perms.catalog.worker %}
-        - <a href="{% url 'furnitureinstance-update' copy.id %}">Обновить состояние </a>
-        {% endif %}
-      </p>
-    {% endfor %}
+        <p style="margin:0px;" class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'n' %}text-danger{% else %}text-warning{% endif %}">
+          {{ copy.get_status_display }}
+        </p>
+        <p style="margin:0px;">
+          {{ copy.delivery }}
+        </p>
+        <p style="margin:0px;" class="text-muted"><strong>Id:</strong> {{ copy.id }}<br>
+          <a href="{% url 'furnitureinstance-update' copy.id %}">Обновить состояние </a>
+        </p>
+      </div>
+      {% endfor %}
+
+      {% else %}
+        {% for copy in furniture.furnitureinstance_set.all %}
+          {% if copy.status != 'n' %}
+            <div style="border-radius: 25px;
+                        border: 3px solid {% if copy.status == 'a' %} #73AD21 {% elif copy.status == 'n' %} red {% else %} #ffc107 {% endif %};
+                        padding: 10px;
+                        margin: 10px;
+                        width: 70%;
+                        height: auto;">
+
+              <p style="margin:0px;" class="{% if copy.status == 'a' %}text-success {% else %}text-warning{% endif %}">
+                {{ copy.get_status_display }}
+              </p>
+              <p style="margin:0px;">
+                {{ copy.delivery }}
+              </p>
+            </div>
+          {% endif %}
+      {% endfor %}
+    {% endif %}
   </div>
 {% endblock %}
 8404fdc0-6651-4dba-95cb-f2a9896512bf
