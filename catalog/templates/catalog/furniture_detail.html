@@ -45,6 +45,10 @@
       {% endfor %}
 
       {% else %}
+        {% if furniture.get_available_amount == 0 %}
+            <p class="text-warning"> Товар закончился, подпишитесь на нашу рассылку, чтоб первыми узнать о поступлении!</p>
+        {% endif %}
+
         {% for copy in furniture.furnitureinstance_set.all %}
           {% if copy.status != 'n' %}
             <div style="border-radius: 25px;
