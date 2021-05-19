@@ -29,6 +29,7 @@ urlpatterns = [
     path('', RedirectView.as_view(url='/catalog/', permanent=True)),
     path('accounts/', include('allauth.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('send_mail/', include('send_mail.urls')),
 
     ]
 

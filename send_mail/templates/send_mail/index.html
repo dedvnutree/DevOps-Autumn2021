@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+         <title>Подписка</title>
+</head>
+<body>
+    <center>
+        <h1 class = 'alert alert-success'>Подписка</h1>
+    </h3>
+    <form method="POST">
+        <!-- Very Important csrf Token -->
+        {% csrf_token %}
+        <div class = "form-group">
+            <p>
+            <h3>{{ form.as_p }}</h3>
+        </p>
+            <br>
+            <input type="submit" name="Subscribe" class = 'btn btn-primary btn-lg'>
+                </div>
+            </form>
+        </center>
+</body>
+</html>
