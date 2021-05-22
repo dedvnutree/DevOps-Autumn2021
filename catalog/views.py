@@ -17,8 +17,6 @@ def index(request):
     num_visits = request.session.get('num_visits', 1)
     request.session['num_visits'] = num_visits + 1
 
-    basket = cache.get(str(request.user.get_username))
-
     context = {
         'num_furniture': num_furniture,
         'num_instances': num_instances,
@@ -26,7 +24,6 @@ def index(request):
         'num_brands': num_brands,
         'num_brands_from_Russia': num_brands_from_russia,
         'num_visits': num_visits,
-        'basket': basket,
     }
 
     return render(request, 'index.html', context=context)
