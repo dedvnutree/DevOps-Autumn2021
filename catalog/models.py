@@ -28,6 +28,7 @@ class Furniture(models.Model):
     type = models.ManyToManyField(Type, help_text="Select a type of this product")
     published = models.BooleanField(default=False, help_text="Опубликовано")
     image = models.CharField(max_length=500, help_text="Изображение продукта", null=True)
+    price = models.DecimalField(max_digits=6, decimal_places=2, default=1000.20)
 
     def __str__(self):
         return self.name
@@ -56,9 +57,9 @@ class FurnitureInstance(models.Model):
     buyer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     Availability_STATUS = (
-        ('a', 'Available'),
-        ('n', 'Not available'),
-        ('r', 'Reserved'),
+        ('a', 'В наличии'),
+        ('n', 'Куплен'),
+        ('r', 'Зарезервирован'),
     )
 
     status = models.CharField(max_length=1, choices=Availability_STATUS, blank=True, default='m', help_text='Furniture availability')

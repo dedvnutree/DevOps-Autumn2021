@@ -3,6 +3,8 @@ from catalog.models import Furniture, FurnitureInstance, Brand
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import permission_required
+from django.core.cache import cache
+from django.contrib.auth.models import User
 
 
 def index(request):
@@ -15,6 +17,8 @@ def index(request):
     num_visits = request.session.get('num_visits', 1)
     request.session['num_visits'] = num_visits + 1
 
+    basket = cache.get(str(request.user.get_username))
+
     context = {
         'num_furniture': num_furniture,
         'num_instances': num_instances,
@@ -22,9 +26,74 @@ def index(request):
         'num_brands': num_brands,
         'num_brands_from_Russia': num_brands_from_russia,
         'num_visits': num_visits,
+        'basket': basket,
     }
 
     return render(request, 'index.html', context=context)
+
+
+def Add_To_Basket(request, pk):
+    userName= str(request.user.get_username)
+    userCache = cache.get(userName)
+    if(userCache is None):
+        userCache= {'basketList': [pk]}
+        cache.set(userName, userCache, None)
+
+    userCache = cache.get(userName)
+
+    basketList = userCache['basketList']
+    if(basketList is None): #если не существует
+        userCache['basketList':[pk]]
+        cache.set(userName, userCache, None)
+    else:
+        if(pk not in basketList):
+            basketList.append(pk)
+            userCache['basketList'] = basketList
+        cache.set(userName, userCache, None)
+
+    return HttpResponse('<h1>Добавлено в корзину!</h1>')
+
+def Remove_From_Basket(request, pk):
+    userName= str(request.user.get_username)
+    userCache = cache.get(userName)
+    if(userCache is None):
+        return HttpResponse('<h1>Такого товара нет в корзине!</h1>')
+
+    userCache = cache.get(userName)
+    basketList = userCache['basketList']
+    if(basketList is None):
+        return HttpResponse('<h1>Такого товара нет в корзине!</h1>')
+    else:
+        if(pk in basketList):
+            basketList.remove(pk)
+            userCache['basketList'] = basketList
+        cache.set(userName, userCache, None)
+
+    return HttpResponse('<h1>Удалено из корзины!</h1>')
+
+
+def basketView(request):
+    userName = str(request.user.get_username)
+    userCache = cache.get(userName)
+    context = {}
+
+    if(userCache is not None):
+        context = {"basketList": userCache['basketList']}
+        context["furnitureInstances"] = FurnitureInstance.objects.filter(id__in = context['basketList'])
+        sum = 0
+        for furnitureInstance in context["furnitureInstances"]:
+            sum += furnitureInstance.furniture.price
+        context['sum'] = sum
+
+    return render(request, 'catalog/basket.html', context=context)
+
+
+class PersonalAccountListView(LoginRequiredMixin, generic.ListView):
+    model = FurnitureInstance
+    template_name = 'catalog/personal_account.html'
+
+    def get_queryset(self):
+        return FurnitureInstance.objects.filter(buyer=self.request.user).order_by('delivery_day')
 
 
 class FurnitureListView(generic.ListView):
@@ -45,12 +114,6 @@ class BrandDetailView(generic.DetailView):
     model = Brand
 
 
-class PersonalAccountListView(LoginRequiredMixin, generic.ListView):
-    model = FurnitureInstance
-    template_name = 'catalog/personal_account.html'
-
-    def get_queryset(self):
-        return FurnitureInstance.objects.filter(buyer=self.request.user).order_by('delivery_day')
 
 
 class WorkersPageListView(PermissionRequiredMixin, generic.ListView):
@@ -61,10 +124,11 @@ class WorkersPageListView(PermissionRequiredMixin, generic.ListView):
     def get_queryset(self):
         return Furniture.objects.filter(published=False)
 
+
 import datetime
 from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.urls import reverse
 
 from catalog.forms import RenewFurnitureForm, RenewFurnitureModelForm

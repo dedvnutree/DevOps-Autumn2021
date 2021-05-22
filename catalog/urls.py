@@ -1,4 +1,7 @@
+from django.conf.urls import url
 from django.urls import path
+from django.views.generic import RedirectView
+
 from . import views
 
 
@@ -25,4 +28,11 @@ urlpatterns += [
     path('brand/create/', views.BrandCreate.as_view(), name='brand-create'),
     path('brand/<int:pk>/update/', views.BrandUpdate.as_view(), name='brand-update'),
     path('brand/<int:pk>/delete/', views.BrandDelete.as_view(), name='brand-delete'),
+]
+
+urlpatterns += [
+    path('add_to_basket/<uuid:pk>', views.Add_To_Basket, name="add-to-basket"),
+    path('remove_from_basket/<uuid:pk>', views.Remove_From_Basket, name="remove-from-basket"),
+    path('basket', views.basketView, name='basket'),
+
 ]
