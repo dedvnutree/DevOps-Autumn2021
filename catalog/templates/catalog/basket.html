@@ -1,0 +1,25 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Моя корзина</h1>
+
+    {% if basketList %}
+    <ul>
+
+      {% for furnitureInstance in furnitureInstances %}
+      <li>
+          {{ furnitureInstance.furniture.type.first}}
+          <a href="{{ furnitureInstance.furniture.get_absolute_url }}">{{furnitureInstance.furniture}}    </a>
+          - {{ furnitureInstance.furniture.price }}
+          <a target="_self" class="remove-from-basket"   href="{% url 'remove-from-basket' furnitureInstance.id %}">
+           Удалить из корзины
+          </a>
+      </li>
+      {% endfor %}
+    </ul>
+
+    {% else %}
+      <p>Корзина пуста</p>
+    {% endif %}
+    <button class="add-to-basket"> Оплата: {{ sum }}  </button>
+{% endblock %}
