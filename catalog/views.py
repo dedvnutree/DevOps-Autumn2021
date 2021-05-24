@@ -105,6 +105,7 @@ class FurnitureDetailView(generic.DetailView):
 
 class BrandListView(generic.ListView):
     model = Brand
+    paginate_by = 8
 
 
 class BrandDetailView(generic.DetailView):
@@ -132,7 +133,6 @@ from catalog.forms import RenewFurnitureForm, RenewFurnitureModelForm
 @login_required
 @permission_required('worker', raise_exception=True)
 def renew_furniture_worker(request, pk):
-    """View function for renewing a specific FurnitureInstance by worker."""
 
     furniture_instance = get_object_or_404(FurnitureInstance, pk=pk)
 

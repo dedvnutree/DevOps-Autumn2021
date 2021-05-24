@@ -10,7 +10,6 @@ class RenewFurnitureForm(forms.Form):
     def clean_renewal_date(self):
         data = self.cleaned_data['renewal_date']
 
-        # Check if a date is not in the past.
         if data < datetime.date.today():
             raise ValidationError(_('Invalid date - renewal in past'))
 
@@ -26,7 +25,7 @@ from catalog.models import FurnitureInstance
 
 
 class RenewFurnitureModelForm(ModelForm):
-    def clean_due_back(self):
+    def clean_delivery_day(self):
        data = self.cleaned_data['delivery_day']
 
        # Check if a date is not in the past.

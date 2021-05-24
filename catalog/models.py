@@ -50,7 +50,7 @@ class Furniture(models.Model):
 class FurnitureInstance(models.Model):
     """
         Model representing a specific copy of a furniture
-        """
+    """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                           help_text="Unique ID for this particular furniture")
     furniture = models.ForeignKey('Furniture', on_delete=models.SET_NULL, null=True)
@@ -82,9 +82,6 @@ class FurnitureInstance(models.Model):
         permissions = (("worker", "Can manage catalog items (WORKER)"),)
 
     def __str__(self):
-        """
-        String for representing the Model object
-        """
         return '%s (%s) -- %s' % (self.id, self.furniture.name, self.status)
 
 
@@ -97,18 +94,12 @@ class Brand(models.Model):
     description = models.CharField(max_length=500, null=True)
 
     def get_absolute_url(self):
-        """
-        Returns the url to access a particular author instance.
-        """
         return reverse('brand-detail', args=[str(self.id)])
 
     def get_published_furniture(self):
         return self.furniture_set.filter(published='True')
 
     def __str__(self):
-        """
-        String for representing the Model object.
-        """
         return '%s, %s' % (self.name, self.country)
 
     class Meta:
