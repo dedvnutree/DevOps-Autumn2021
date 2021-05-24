@@ -11,7 +11,7 @@
           {{ furnitureInstance.furniture.type.first}}
           <a href="{{ furnitureInstance.furniture.get_absolute_url }}">{{furnitureInstance.furniture}}    </a>
           - {{ furnitureInstance.furniture.price }}
-          <a target="_self" class="remove-from-basket"   href="{% url 'remove-from-basket' furnitureInstance.id %}">
+          <a target="_self" class="remove-from-basket"   href="{% url 'remove-from-basket' furnitureInstance.id %}?next={{request.path}}">
            Удалить из корзины
           </a>
       </li>

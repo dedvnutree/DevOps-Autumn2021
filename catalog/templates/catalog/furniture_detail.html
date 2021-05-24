@@ -50,7 +50,7 @@
               {% if copy.status == 'a' %}
                  <a target="_self"
                     class="add-to-basket"
-                    href="{% url 'add-to-basket' copy.id %}">
+                    href="{% url 'add-to-basket' copy.id %}?next={{request.path}}">
                     В корзину!
                   </a>
               {% endif %}
@@ -74,12 +74,16 @@
                   {{ copy.delivery }}
                 </p>
               </div>
-              {% if copy.status == 'a' %}
-              <a target="_self"
-                    class="add-to-basket"
-                    href="{% url 'add-to-basket' copy.id %}">
-                    В корзину!
-                  </a>
+              {% if user.is_authenticated %}
+                  {% if copy.status == 'a' %}
+                      <a target="_self"
+                        class="add-to-basket"
+                        href="{% url 'add-to-basket' copy.id %}?next={{request.path}}">
+                        В корзину!
+                      </a>
+                  {% endif %}
+              {% else %}
+                <a class="add-to-basket" href="{% url 'login'%}?next={{request.path}}">Авторизуйтесь для покупки!</a>
               {% endif %}
             </div>
           {% endif %}

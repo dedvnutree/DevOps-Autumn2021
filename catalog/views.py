@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from catalog.models import Furniture, FurnitureInstance, Brand
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.contrib.auth.decorators import permission_required
 from django.core.cache import cache
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 
 
@@ -47,8 +47,8 @@ def Add_To_Basket(request, pk):
             basketList.append(pk)
             userCache['basketList'] = basketList
         cache.set(userName, userCache, None)
+    return redirect(request.GET.get('next'))
 
-    return HttpResponse('<h1>Добавлено в корзину!</h1>')
 
 def Remove_From_Basket(request, pk):
     userName= str(request.user.get_username)
@@ -66,9 +66,9 @@ def Remove_From_Basket(request, pk):
             userCache['basketList'] = basketList
         cache.set(userName, userCache, None)
 
-    return HttpResponse('<h1>Удалено из корзины!</h1>')
+    return redirect(request.GET.get('next'))
 
-
+@login_required
 def basketView(request):
     userName = str(request.user.get_username)
     userCache = cache.get(userName)
@@ -123,7 +123,6 @@ class WorkersPageListView(PermissionRequiredMixin, generic.ListView):
 
 
 import datetime
-from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.urls import reverse

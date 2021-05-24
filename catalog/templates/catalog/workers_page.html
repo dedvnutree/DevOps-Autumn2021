@@ -6,6 +6,7 @@
     {% if furniture_list %}
     <ul>
         <li><h4> <a href="{% url 'furniture-create' %}"> Создать новый товар </a> </h4></li>
+        <li><h4> <a href="{% url 'brand-create' %}"> Создать новый бренд </a> </h4></li>
       {% for furniture in furniture_list %}
       <li>
           {{furniture.type.first}}
