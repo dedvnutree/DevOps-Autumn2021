@@ -62,7 +62,7 @@ class FurnitureInstance(models.Model):
         ('r', 'Зарезервирован'),
     )
 
-    status = models.CharField(max_length=1, choices=Availability_STATUS, blank=True, default='m', help_text='Furniture availability')
+    status = models.CharField(max_length=1, choices=Availability_STATUS, blank=True, default='a', help_text='Furniture availability')
     delivery_day = models.DateField(default=date.today() + timedelta(days=10), help_text="Delivery day")
 
     @property
