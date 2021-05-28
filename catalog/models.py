@@ -11,6 +11,7 @@ class Type(models.Model):
     Model representing type of product (clothes, furniture)
     """
     name = models.CharField(max_length=200, help_text="Enter the product type")
+    testfield = models.CharField(max_length=1, default='')
 
     def __str__(self):
         return self.name
@@ -18,14 +19,14 @@ class Type(models.Model):
 
 class Furniture(models.Model):
     """
-        Model representing a product
+       Продукт
     """
     name = models.CharField(max_length=200)
     brand = models.ForeignKey('Brand', on_delete=models.SET_NULL, null=True)
     description = models.TextField(max_length=1000, help_text="Описание продукта")
     isbn = models.CharField('ISBN', max_length=13,
                             help_text='13 Character <a href="https://www.isbn-international.org/content/what-isbn">ISBN number</a>')
-    type = models.ManyToManyField(Type, help_text="Select a type of this product")
+    type = models.ManyToManyField(Type, help_text="Выберите тип продукта")
     published = models.BooleanField(default=False, help_text="Опубликовано")
     image = models.CharField(max_length=500, help_text="Изображение продукта", null=True)
     price = models.DecimalField(max_digits=6, decimal_places=2, default=1000.20)
@@ -49,7 +50,7 @@ class Furniture(models.Model):
 
 class FurnitureInstance(models.Model):
     """
-        Model representing a specific copy of a furniture
+        Экземпляр продукта
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                           help_text="Unique ID for this particular furniture")
@@ -62,13 +63,13 @@ class FurnitureInstance(models.Model):
         ('r', 'Зарезервирован'),
     )
 
-    status = models.CharField(max_length=1, choices=Availability_STATUS, blank=True, default='a', help_text='Furniture availability')
+    status = models.CharField(max_length=1, choices=Availability_STATUS, blank=True, help_text='Furniture availability', default='a')
     delivery_day = models.DateField(default=date.today() + timedelta(days=10), help_text="Delivery day")
 
     @property
     def delivery(self):
         if self.status == 'a':
-            self.delivery_day = date.today() + timedelta(days=10)
+            self.delivery_day = date.today() + timedelta(days=12)
             return "привезем уже к %s!" % self.delivery_day
 
         if self.delivery_day < date.today():
