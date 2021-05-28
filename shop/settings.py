@@ -23,7 +23,7 @@ DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 EMAIL_HOST_USER = 'taa'
 EMAIL_HOST_PASSWORD = 'bbb'
 
-ALLOWED_HOSTS = ['ihatehuroku.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['last-try-shop.herokuapp.com','127.0.0.1']
 
 
 # Application definition
