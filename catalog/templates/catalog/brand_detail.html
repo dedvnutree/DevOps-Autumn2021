@@ -6,6 +6,9 @@
   <p><strong>Страна:</strong> {{ brand.country}}</p>
   <p><strong>Контакты:</strong> {{ brand.description}}</p>
 
+  <a href="{% url 'brand-update' brand.id %}"> Изменить бренд </a><br>
+  <a href="{% url 'brand-delete' brand.id %}"> Удалить бренд </a>
+
   <div style="margin-left:20px;margin-top:20px">
     <h4>Товары</h4>
     {% for copy in brand.get_published_furniture %}

@@ -187,6 +187,7 @@ class FurnitureInstanceCreate(PermissionRequiredMixin,CreateView):
     permission_required = 'catalog.worker'
     model = FurnitureInstance
     fields = '__all__'
+    success_url = reverse_lazy('furniture')
 
 class FurnitureInstanceUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = 'catalog.worker'

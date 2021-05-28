@@ -1,0 +1,29 @@
+{% extends "base_generic.html" %}
+{% block body %}
+
+    {% if messages %}
+    <div>
+      <strong>Сообщения:</strong>
+      <ul>
+        {% for message in messages %}
+        <li>{{message}}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <div>
+      <strong>Меню:</strong>
+      <ul>
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'account_email' %}">Смена пароля</a></li>
+        <li><a href="{% url 'account_logout' %}">Смена аккаунта</a></li>
+        {% else %}
+        <li><a href="{% url 'account_login' %}">Авторизация</a></li>
+        <li><a href="{% url 'account_signup' %}">Регистрация</a></li>
+        {% endif %}
+      </ul>
+    </div>
+{% endblock %}
+{% block content %}
+{% endblock %}

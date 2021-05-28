@@ -1,11 +1,15 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    <h1>Мои покупки</h1>
+    <h2> Управление </h2>
+    <div>
+    <a href="{% url 'account_email' %}">Смена почты</a> <br>
+    <a href="{% url 'password_change' %}">Смена пароля</a>
+    </div>
 
+    <h1>Мои покупки</h1>
     {% if furnitureinstance_list %}
     <ul>
-
       {% for furnitureinst in furnitureinstance_list %}
       <li>
           {{furnitureinst.furniture.type.first}}

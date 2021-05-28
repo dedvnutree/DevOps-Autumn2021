@@ -6,13 +6,13 @@
 
 {% block content %}
 
-      <strong>Menu:</strong>
+      <strong>Управление:</strong>
       <ul>
         {% if user.is_authenticated %}
-        <li><a href="{% url 'account_email' %}">Сменить пароль</a></li>
+        <li><a href="{% url 'account_email' %}">Сменить почту</a></li>
         {% else %}
-        <li><a href="{% url 'account_login' %}">Sign In</a></li>
-        <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+        <li><a href="{% url 'account_login' %}">Авторизация</a></li>
+        <li><a href="{% url 'account_signup' %}">Регистрация</a></li>
         {% endif %}
       </ul>
 

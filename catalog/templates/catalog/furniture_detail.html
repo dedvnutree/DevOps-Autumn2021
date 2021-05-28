@@ -25,6 +25,8 @@
   <p><strong>Описание:</strong> {{ furniture.description }}</p>
   <p><strong>Цена:</strong> всего <strong> {{ furniture.price }}</strong>!  </p>
   <p><strong>ISBN:</strong> {{ furniture.isbn }}</p>
+  <a href="{% url 'furniture-update' furniture.id %}"> Изменить товар </a><br>
+  <a href="{% url 'furniture-delete' furniture.id %}"> Удалить товар </a>
 
   <div style="margin-left:20px;margin-top:20px">
     <h4>Наличие:</h4>
