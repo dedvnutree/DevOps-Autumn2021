@@ -11,7 +11,6 @@ class Type(models.Model):
     Model representing type of product (clothes, furniture)
     """
     name = models.CharField(max_length=200, help_text="Enter the product type")
-    testfield = models.CharField(max_length=1, default='')
 
     def __str__(self):
         return self.name
