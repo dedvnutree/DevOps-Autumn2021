@@ -23,7 +23,10 @@ DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
-ALLOWED_HOSTS = ['last-try-shop.herokuapp.com','127.0.0.1']
+EMAIL_HOST_USER = 'tkchkpavel@gmail.com'
+EMAIL_HOST_PASSWORD = 'mipMapBlibBlab71'
+
+ALLOWED_HOSTS = ['last-try-shop.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
@@ -42,8 +45,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.vk',
     'send_mail',
-    'pymemcache',
-
 ]
 
 MIDDLEWARE = [
@@ -148,8 +149,9 @@ AUTHENTICATION_BACKENDS = (
 SITE_ID = 1
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
-        'LOCATION': '127.0.0.1:11211',
+        'BACKEND':
+        'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'my_cache_table',
     }
 }
 
