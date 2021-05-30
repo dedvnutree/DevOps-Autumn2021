@@ -12,17 +12,6 @@ def index(request):
     for mail_message in today_mail:
         mail_message.send_scheduled_mail()
 
-    # import memcache
-    # mc = memcache.Client(['127.0.0.1:11211'])
-    # mc.set("some_key", "Some value", time=60*2)
-    # value = mc.get("some_key")
-    # mc.set("another_key", 3)
-    # mc.delete("another_key")
-    # mc.set("key", "1")  # note that the key used for incr/decr must be a string.
-    # mc.incr("key")
-    # mc.decr("key")
-    # test = mc.get('some_key')
-
     num_furniture = Furniture.objects.all().count()
     num_instances = FurnitureInstance.objects.all().count()
     num_instances_available = FurnitureInstance.objects.filter(status='a').count()
@@ -47,7 +36,6 @@ def index(request):
 
 def Add_To_Basket(request, pk):
     userName= str(request.user.username)
-    # cache = Client('127.0.0.1:11211') #строчка добавлена для pymemcache
     userCache = cache.get(userName)
     if(userCache is None):
         userCache= {'basketList': [pk]}
@@ -71,7 +59,6 @@ def Add_To_Basket(request, pk):
 
 def Remove_From_Basket(request, pk):
     userName= str(request.user.username)
-    # cache = Client('127.0.0.1:11211')
     userCache = cache.get(userName)
     if(userCache is None):
         return HttpResponse('<h1>Такого товара нет в корзине!</h1>')
@@ -94,7 +81,6 @@ def Remove_From_Basket(request, pk):
 @login_required
 def basketView(request):
     userName = str(request.user.username)
-    # cache = Client('127.0.0.1')
     userCache = cache.get(userName)
     context = {}
 
