@@ -10,13 +10,10 @@
 <h1>{% trans "Sign In" %}</h1>
 
 {% get_providers as socialaccount_providers %}
-
 {% if socialaccount_providers %}
-<p>Пожалуйста, войдите с помощью одной из
-ваших существующих сторонних учетных записей или <a href="{{ signup_url }}">зарегистрируйтесь</a>, а затем воспользуйтесь формой ниже:</p>
 
 <div class="socialaccount_ballot">
-
+<p> Авторизация с помощью социальных сетей:</p>
   <ul class="socialaccount_providers">
     {% include "socialaccount/snippets/provider_list.html" with process="login" %}
   </ul>
@@ -35,6 +32,8 @@
   {% if redirect_field_value %}
   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
   {% endif %}
+
+  <p><a href="{{ signup_url }}">Регистрация</a></p>
   <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
   <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
 </form>
