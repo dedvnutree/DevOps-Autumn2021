@@ -6,22 +6,13 @@ from django.core.cache import cache
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 from send_mail.models import DelayedMail, MailRecipient
+import bmemcached
+import os
 
 def index(request):
     today_mail = DelayedMail.get_today_mail()
     for mail_message in today_mail:
         mail_message.send_scheduled_mail()
-
-    # import memcache
-    # mc = memcache.Client(['127.0.0.1:11211'])
-    # mc.set("some_key", "Some value", time=60*2)
-    # value = mc.get("some_key")
-    # mc.set("another_key", 3)
-    # mc.delete("another_key")
-    # mc.set("key", "1")  # note that the key used for incr/decr must be a string.
-    # mc.incr("key")
-    # mc.decr("key")
-    # test = mc.get('some_key')
 
     num_furniture = Furniture.objects.all().count()
     num_instances = FurnitureInstance.objects.all().count()

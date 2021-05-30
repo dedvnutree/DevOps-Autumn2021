@@ -145,11 +145,26 @@ AUTHENTICATION_BACKENDS = (
 )
 
 SITE_ID = 1
+
+servers = os.environ['MEMCACHIER_SERVERS']
+username = os.environ['MEMCACHIER_USERNAME']
+password = os.environ['MEMCACHIER_PASSWORD']
+
 CACHES = {
     'default': {
-        'BACKEND':
-        'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': 'my_cache_table',
+        # Use django-bmemcached
+        'BACKEND': 'django_bmemcached.memcached.BMemcached',
+
+        # TIMEOUT is not the connection timeout! It's the default expiration
+        # timeout that should be applied to keys! Setting it to `None`
+        # disables expiration.
+        'TIMEOUT': None,
+
+        'LOCATION': servers,
+        'OPTIONS': {
+            'username': username,
+            'password': password,
+        }
     }
 }
 
