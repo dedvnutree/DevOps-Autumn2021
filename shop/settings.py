@@ -23,8 +23,6 @@ DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
-EMAIL_HOST_USER = 'tkchkpavel@gmail.com'
-EMAIL_HOST_PASSWORD = 'mipMapBlibBlab71'
 
 ALLOWED_HOSTS = ['last-try-shop.herokuapp.com', '127.0.0.1']
 
