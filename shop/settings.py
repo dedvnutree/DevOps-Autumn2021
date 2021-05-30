@@ -144,7 +144,7 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-SITE_ID = 1
+SITE_ID = 2
 
 servers = os.environ['MEMCACHIER_SERVERS']
 username = os.environ['MEMCACHIER_USERNAME']
