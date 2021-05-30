@@ -12,18 +12,15 @@
 {% get_providers as socialaccount_providers %}
 
 {% if socialaccount_providers %}
-<p>{% blocktrans %}Please sign in with one
-of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
-for a  account and sign in below:{% endblocktrans %}</p>
+<p>Пожалуйста, войдите с помощью одной из
+ваших существующих сторонних учетных записей или <a href="{{ signup_url }}">зарегистрируйтесь</a>
+для создания акканта и воспользуйтесь формой ниже:</p>
 
 <div class="socialaccount_ballot">
 
   <ul class="socialaccount_providers">
     {% include "socialaccount/snippets/provider_list.html" with process="login" %}
   </ul>
-
-  <div class="login-or">{% trans 'or' %}</div>
-
 </div>
 
 {% include "socialaccount/snippets/login_extra.html" %}
