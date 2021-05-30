@@ -2,23 +2,26 @@ from django.shortcuts import render, redirect
 from catalog.models import Furniture, FurnitureInstance, Brand
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-# from django.core.cache import cache
+from django.core.cache import cache
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
-from pymemcache.client.base import Client
-
+from send_mail.models import DelayedMail, MailRecipient
 
 def index(request):
-    import memcache
-    mc = memcache.Client(['127.0.0.1:11211'])
-    mc.set("some_key", "Some value", time=60*2)
-    value = mc.get("some_key")
-    mc.set("another_key", 3)
-    mc.delete("another_key")
-    mc.set("key", "1")  # note that the key used for incr/decr must be a string.
-    mc.incr("key")
-    mc.decr("key")
-    test = mc.get('some_key')
+    today_mail = DelayedMail.get_today_mail()
+    for mail_message in today_mail:
+        mail_message.send_scheduled_mail()
+
+    # import memcache
+    # mc = memcache.Client(['127.0.0.1:11211'])
+    # mc.set("some_key", "Some value", time=60*2)
+    # value = mc.get("some_key")
+    # mc.set("another_key", 3)
+    # mc.delete("another_key")
+    # mc.set("key", "1")  # note that the key used for incr/decr must be a string.
+    # mc.incr("key")
+    # mc.decr("key")
+    # test = mc.get('some_key')
 
     num_furniture = Furniture.objects.all().count()
     num_instances = FurnitureInstance.objects.all().count()
@@ -36,7 +39,7 @@ def index(request):
         'num_brands': num_brands,
         'num_brands_from_Russia': num_brands_from_russia,
         'num_visits': num_visits,
-        'test': test,
+        # 'test': test,
     }
 
     return render(request, 'index.html', context=context)
@@ -44,7 +47,7 @@ def index(request):
 
 def Add_To_Basket(request, pk):
     userName= str(request.user.username)
-    cache = Client('127.0.0.1:11211') #строчка добавлена для pymemcache
+    # cache = Client('127.0.0.1:11211') #строчка добавлена для pymemcache
     userCache = cache.get(userName)
     if(userCache is None):
         userCache= {'basketList': [pk]}
@@ -59,12 +62,16 @@ def Add_To_Basket(request, pk):
             basketList.append(pk)
             userCache['basketList'] = basketList
         cache.set(userName, userCache)
+
+    if request.user.email:
+        MailRecipient.add_as_recipient(request.user.email)
+
     return redirect(request.GET.get('next'))
 
 
 def Remove_From_Basket(request, pk):
     userName= str(request.user.username)
-    cache = Client('127.0.0.1:11211')
+    # cache = Client('127.0.0.1:11211')
     userCache = cache.get(userName)
     if(userCache is None):
         return HttpResponse('<h1>Такого товара нет в корзине!</h1>')
@@ -79,12 +86,15 @@ def Remove_From_Basket(request, pk):
             userCache['basketList'] = basketList
         cache.set(userName, userCache)
 
+    if not basketList and request.user.email:
+        MailRecipient.remove_as_recipient(request.user.email)
+
     return redirect(request.GET.get('next'))
 
 @login_required
 def basketView(request):
     userName = str(request.user.username)
-    cache = Client('127.0.0.1')
+    # cache = Client('127.0.0.1')
     userCache = cache.get(userName)
     context = {}
 

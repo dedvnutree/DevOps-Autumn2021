@@ -1,20 +1,26 @@
 from django.contrib import admin
 
 from .models import Type, Brand, Furniture, FurnitureInstance
+from send_mail.models import DelayedMail, MailRecipient
+
+
+@admin.register(DelayedMail)
+class MailAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(MailRecipient)
+class RecipientAdmin(admin.ModelAdmin):
+    pass
 
 
 class BrandAdmin(admin.ModelAdmin):
     list_display = ('name', 'country', 'description',)
 
 
-# class FurnitureInstanceInline(admin.TabularInline): #не работает хз почему
-#     model = FurnitureInstance
-
-
 @admin.register(Furniture)
 class FurnitureAdmin(admin.ModelAdmin):
     list_display = ('name', 'display_type', 'brand', 'price', 'image', 'published')
-    #inlines = [FurnitureInstanceInline]
 
 
 @admin.register(FurnitureInstance)
