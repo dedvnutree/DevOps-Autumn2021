@@ -2,12 +2,24 @@ from django.shortcuts import render, redirect
 from catalog.models import Furniture, FurnitureInstance, Brand
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.core.cache import cache
+# from django.core.cache import cache
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
+from pymemcache.client.base import Client
 
 
 def index(request):
+    import memcache
+    mc = memcache.Client(['127.0.0.1:11211'])
+    mc.set("some_key", "Some value", time=60*2)
+    value = mc.get("some_key")
+    mc.set("another_key", 3)
+    mc.delete("another_key")
+    mc.set("key", "1")  # note that the key used for incr/decr must be a string.
+    mc.incr("key")
+    mc.decr("key")
+    test = mc.get('some_key')
+
     num_furniture = Furniture.objects.all().count()
     num_instances = FurnitureInstance.objects.all().count()
     num_instances_available = FurnitureInstance.objects.filter(status='a').count()
@@ -24,34 +36,35 @@ def index(request):
         'num_brands': num_brands,
         'num_brands_from_Russia': num_brands_from_russia,
         'num_visits': num_visits,
+        'test': test,
     }
 
     return render(request, 'index.html', context=context)
 
 
 def Add_To_Basket(request, pk):
-    userName= str(request.user.get_username)
+    userName= str(request.user.username)
+    cache = Client('127.0.0.1:11211') #строчка добавлена для pymemcache
     userCache = cache.get(userName)
     if(userCache is None):
         userCache= {'basketList': [pk]}
-        cache.set(userName, userCache, None)
-
-    userCache = cache.get(userName)
+        cache.set(userName, userCache)
 
     basketList = userCache['basketList']
     if(basketList is None): #если не существует
         userCache['basketList':[pk]]
-        cache.set(userName, userCache, None)
+        cache.set(userName, userCache)
     else:
         if(pk not in basketList):
             basketList.append(pk)
             userCache['basketList'] = basketList
-        cache.set(userName, userCache, None)
+        cache.set(userName, userCache)
     return redirect(request.GET.get('next'))
 
 
 def Remove_From_Basket(request, pk):
-    userName= str(request.user.get_username)
+    userName= str(request.user.username)
+    cache = Client('127.0.0.1:11211')
     userCache = cache.get(userName)
     if(userCache is None):
         return HttpResponse('<h1>Такого товара нет в корзине!</h1>')
@@ -64,13 +77,14 @@ def Remove_From_Basket(request, pk):
         if(pk in basketList):
             basketList.remove(pk)
             userCache['basketList'] = basketList
-        cache.set(userName, userCache, None)
+        cache.set(userName, userCache)
 
     return redirect(request.GET.get('next'))
 
 @login_required
 def basketView(request):
-    userName = str(request.user.get_username)
+    userName = str(request.user.username)
+    cache = Client('127.0.0.1')
     userCache = cache.get(userName)
     context = {}
 
